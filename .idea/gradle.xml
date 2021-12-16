@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/constants" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/hero" />
+            <option value="$PROJECT_DIR$/hero/hero_datasource" />
             <option value="$PROJECT_DIR$/hero/hero_datasource_test" />
             <option value="$PROJECT_DIR$/hero/hero_domain" />
             <option value="$PROJECT_DIR$/hero/hero_use_cases" />

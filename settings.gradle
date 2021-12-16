@@ -10,6 +10,7 @@ rootProject.name = "Dota_Info App"
 include ':app'
 include ':hero'
 include ':hero:hero_datasource_test'
+include ':hero:hero_datasource'
 include ':hero:hero_domain'
 include ':hero:hero_use_cases'
 include ':hero:ui_hero_list'
