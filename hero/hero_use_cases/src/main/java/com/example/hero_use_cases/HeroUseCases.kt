@@ -1,6 +1,6 @@
 package com.example.hero_use_cases
 
-import com.example.hero_datasource.network.model.HeroService
+import com.example.hero_datasource.network.HeroService
 
 data class HeroUseCases(
     val getHeros: GetHeros,

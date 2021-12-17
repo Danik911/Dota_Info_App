@@ -1,6 +1,7 @@
-package com.example.hero_datasource.network.model
+package com.example.hero_datasource.network
 
-import com.example.hero_datasource.network.EndPoints
+import com.example.hero_datasource.network.model.HeroDto
+import com.example.hero_datasource.network.model.toHero
 import com.example.hero_domain.Hero
 import io.ktor.client.*
 import io.ktor.client.request.*

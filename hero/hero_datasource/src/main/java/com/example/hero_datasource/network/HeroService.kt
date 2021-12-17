@@ -1,4 +1,4 @@
-package com.example.hero_datasource.network.model
+package com.example.hero_datasource.network
 
 import com.example.hero_domain.Hero
 import io.ktor.client.*
@@ -11,7 +11,7 @@ interface HeroService {
     suspend fun getHeroStats(): List<Hero>
 
     companion object Factory{
-        fun build(): HeroService{
+        fun build(): HeroService {
             return HeroServiceImpl(
                 httpClient = HttpClient(Android){
                     install(JsonFeature){

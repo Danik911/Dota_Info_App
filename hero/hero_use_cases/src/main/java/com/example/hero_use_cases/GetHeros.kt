@@ -3,8 +3,9 @@ package com.example.hero_use_cases
 import com.example.core.DataState
 import com.example.core.ProgressBarState
 import com.example.core.UIComponent
-import com.example.hero_datasource.network.model.HeroService
+import com.example.hero_datasource.network.HeroService
 import com.example.hero_domain.Hero
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.lang.Exception
@@ -15,9 +16,11 @@ class GetHeros(
 ) {
     fun execute(): Flow<DataState<List<Hero>>> = flow {
         try {
-            emit(DataState.Loading(progressBarState = ProgressBarState.Loadind))
+            emit(DataState.Loading<List<Hero>>(progressBarState = ProgressBarState.Loadind))
 
-            val heroes: List<Hero> = try {
+           delay(1000L)
+
+            val heros: List<Hero> = try {// catch network exceptions
                 service.getHeroStats()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -34,12 +37,12 @@ class GetHeros(
 
             //TODO(caching)
 
-            emit(DataState.Data(heroes))
+            emit(DataState.Data(heros))
 
         } catch (e: Exception) {
             e.printStackTrace()
             emit(
-                DataState.Response(
+                DataState.Response<List<Hero>>(
                     uiComponent = UIComponent.Dialog(
                         title = "Error",
                         description = e.message ?: "Unknown error"
@@ -47,7 +50,7 @@ class GetHeros(
                 )
             )
         } finally {
-            emit(DataState.Loading(progressBarState = ProgressBarState.Idle))
+            emit(DataState.Loading<List<Hero>>(progressBarState = ProgressBarState.Idle))
         }
     }
 }
