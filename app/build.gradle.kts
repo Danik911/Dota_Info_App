@@ -63,6 +63,8 @@ dependencies{
 
     implementation(Google.material)
 
+    implementation(Coil.coil)
+
     implementation(SqlDelight.androidDriver)
     implementation("androidx.activity:activity-ktx:1.4.0")
 }

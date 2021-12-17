@@ -10,4 +10,7 @@ dependencies{
 
     "implementation"(SqlDelight.androidDriver)
 
+    "implementation"(Coil.coil)
+
+
 }

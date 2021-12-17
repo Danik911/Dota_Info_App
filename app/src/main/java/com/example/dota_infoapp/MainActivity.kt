@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.tooling.preview.Preview
+import coil.ImageLoader
 import com.example.core.DataState
 import com.example.core.Logger
 import com.example.core.ProgressBarState
@@ -28,9 +29,17 @@ class MainActivity : ComponentActivity() {
     private val state: MutableState<HeroListState> = mutableStateOf(HeroListState())
     private val progressBarState: MutableState<ProgressBarState> =
         mutableStateOf(ProgressBarState.Idle)
+    private lateinit var imageLoader: ImageLoader
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        imageLoader = ImageLoader.Builder(applicationContext)
+            .error(R.drawable.error_image)
+            .placeholder(R.drawable.white_background)
+            .availableMemoryPercentage(.25)
+            .crossfade(enable = true)
+            .build()
 
         val getHeros = HeroUseCases.build(
             sqlDriver = AndroidSqliteDriver(
@@ -54,7 +63,7 @@ class MainActivity : ComponentActivity() {
 
                 }
                 is DataState.Data -> {
-                    state.value =state.value.copy(heros = dataState.data?: listOf())
+                    state.value = state.value.copy(heros = dataState.data ?: listOf())
 
                 }
                 is DataState.Loading -> {
@@ -68,12 +77,14 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             DotaInfoTheme {
-                HeroList(state = state.value)
+                HeroList(
+                    state = state.value,
+                    imageLoader = imageLoader
+                )
             }
         }
     }
 }
-
 
 
 @Preview(showBackground = true)
