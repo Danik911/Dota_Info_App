@@ -39,7 +39,7 @@ class GetHeros(
         } catch (e: Exception) {
             e.printStackTrace()
             emit(
-                DataState.Response(
+                DataState.Response<List<Hero>>(
                     uiComponent = UIComponent.Dialog(
                         title = "Error",
                         description = e.message ?: "Unknown error"
@@ -47,7 +47,7 @@ class GetHeros(
                 )
             )
         } finally {
-            emit(DataState.Loading(progressBarState = ProgressBarState.Idle))
+            emit(DataState.Loading<List<Hero>>(progressBarState = ProgressBarState.Idle))
         }
     }
 }
