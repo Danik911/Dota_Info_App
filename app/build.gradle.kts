@@ -46,6 +46,7 @@ dependencies{
     implementation (project(Modules.core))
     implementation (project(Modules.heroDomain))
     implementation (project(Modules.heroUseCases))
+    implementation (project(Modules.ui_heroList))
 
 
 
@@ -61,6 +62,9 @@ dependencies{
     implementation(Compose.hiltNavigation)
 
     implementation(Google.material)
+
+    implementation(SqlDelight.androidDriver)
+    implementation("androidx.activity:activity-ktx:1.4.0")
 }
 
 

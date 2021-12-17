@@ -3,6 +3,7 @@ package com.example.hero_use_cases
 import com.example.core.DataState
 import com.example.core.ProgressBarState
 import com.example.core.UIComponent
+import com.example.hero_datasource.cache.HeroCache
 import com.example.hero_datasource.network.HeroService
 import com.example.hero_domain.Hero
 import kotlinx.coroutines.delay
@@ -12,13 +13,12 @@ import java.lang.Exception
 
 class GetHeros(
     private val service: HeroService,
-    //TODO (Add caching)
+    private val cache: HeroCache
 ) {
     fun execute(): Flow<DataState<List<Hero>>> = flow {
         try {
             emit(DataState.Loading<List<Hero>>(progressBarState = ProgressBarState.Loadind))
 
-           delay(1000L)
 
             val heros: List<Hero> = try {// catch network exceptions
                 service.getHeroStats()
@@ -35,9 +35,12 @@ class GetHeros(
                 listOf()
             }
 
-            //TODO(caching)
+            //cache the network data
+            cache.insert(heros = heros)
+            // emit data from cache
+            val cachedHeros = cache.selectAll()
 
-            emit(DataState.Data(heros))
+            emit(DataState.Data(cachedHeros))
 
         } catch (e: Exception) {
             e.printStackTrace()

@@ -3,4 +3,11 @@ apply{
 }
 dependencies{
 
+    //modules
+    "implementation"(project(Modules.core))
+    "implementation"(project(Modules.heroDomain))
+    "implementation"(project(Modules.heroUseCases))
+
+    "implementation"(SqlDelight.androidDriver)
+
 }

@@ -14,5 +14,5 @@ object Modules {
     const val heroDomain = ":hero:hero_domain"
     const val heroUseCases = ":hero:hero_use_cases"
     const val ui_heroDetail = ":hero:ui_hero_details"
-    const val ui_heroList = ":hero:ui-hero_list"
+    const val ui_heroList = ":hero:ui_hero_list"
 }
