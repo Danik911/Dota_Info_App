@@ -16,15 +16,18 @@ import com.example.ui_herolist.ui.HeroListState
 @Composable
 fun HeroList(
     state: HeroListState,
-    imageLoader: ImageLoader
-){
+    imageLoader: ImageLoader,
+    navigateToDetailsScreen: (Int) -> Unit
+) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn {
             items(state.heros) { hero ->
                 HeroListItem(
                     hero = hero,
                     imageLoader = imageLoader,
-                    onSelectHero = {}
+                    onSelectHero = { heroId ->
+                        navigateToDetailsScreen(heroId)
+                    }
                 )
 
             }

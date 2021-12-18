@@ -51,6 +51,7 @@ dependencies{
     implementation (project(Modules.heroDomain))
     implementation (project(Modules.heroUseCases))
     implementation (project(Modules.ui_heroList))
+    implementation (project(Modules.ui_heroDetail))
 
 
 
