@@ -74,7 +74,7 @@ dependencies{
     kapt(Hilt.compiler)
 
     implementation(SqlDelight.androidDriver)
-    implementation("androidx.activity:activity-ktx:1.4.0")
+
 }
 
 

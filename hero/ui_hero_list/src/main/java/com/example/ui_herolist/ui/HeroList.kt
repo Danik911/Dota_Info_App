@@ -9,10 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import coil.ImageLoader
+import coil.annotation.ExperimentalCoilApi
 import com.example.core.ProgressBarState
 import com.example.ui_herolist.components.HeroListItem
 import com.example.ui_herolist.ui.HeroListState
 
+@ExperimentalCoilApi
 @Composable
 fun HeroList(
     state: HeroListState,

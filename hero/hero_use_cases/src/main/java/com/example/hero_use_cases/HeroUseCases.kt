@@ -6,7 +6,7 @@ import com.squareup.sqldelight.db.SqlDriver
 
 data class HeroUseCases(
     val getHeros: GetHeros,
-    //TODO(Add other hero use cases)
+    val getGetHeroFromCache: GetHeroFromCache
 ) {
     companion object Factory {
         fun build(sqlDriver: SqlDriver): HeroUseCases {
@@ -17,8 +17,12 @@ data class HeroUseCases(
                     service = service,
                     cache = cache
                 ),
+                getGetHeroFromCache = GetHeroFromCache(
+                    cache = cache
+                )
             )
         }
+
         val schema: SqlDriver.Schema = HeroCache.schema
         val dbName: String = HeroCache.dbName
     }

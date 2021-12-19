@@ -25,7 +25,9 @@ object HeroUseCasesModule {
             name = HeroUseCases.dbName
         )
     }
-
+    /**
+     * Provide all the UseCases in hero-Use-Cases module
+     */
     @Provides
     @Singleton
     fun provideHeroUseCases(
