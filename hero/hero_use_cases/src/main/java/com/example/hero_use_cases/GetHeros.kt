@@ -1,12 +1,11 @@
 package com.example.hero_use_cases
 
-import com.example.core.DataState
-import com.example.core.ProgressBarState
-import com.example.core.UIComponent
+import com.example.core.domain.DataState
+import com.example.core.domain.ProgressBarState
+import com.example.core.domain.UIComponent
 import com.example.hero_datasource.cache.HeroCache
 import com.example.hero_datasource.network.HeroService
 import com.example.hero_domain.Hero
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.lang.Exception

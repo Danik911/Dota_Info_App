@@ -3,6 +3,7 @@ package com.example.dota_infoapp.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -16,12 +17,14 @@ import com.example.dota_infoapp.ui.navigation.Screen
 import com.example.dota_infoapp.ui.theme.DotaInfoTheme
 import com.example.ui_hero_details.ui.HeroDetailsViewModel
 import com.example.ui_herolist.HeroList
+import com.example.ui_herolist.ui.HeroListEvents
 import com.example.ui_herolist.ui.HeroListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 @ExperimentalCoilApi
+@ExperimentalComposeUiApi
 class MainActivity : ComponentActivity() {
 
     @Inject
@@ -59,9 +62,11 @@ class MainActivity : ComponentActivity() {
             HeroList(
                 state = viewModel.state.value,
                 imageLoader = imageLoader,
+                events = viewModel::onTriggerEvent,
                 navigateToDetailsScreen = { heroId ->
                     navController.navigate("${Screen.HeroDetails.route}/$heroId")
-                }
+                },
+
             )
         }
     }

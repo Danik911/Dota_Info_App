@@ -5,9 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.core.DataState
-import com.example.core.Logger
-import com.example.core.UIComponent
+import com.example.core.domain.DataState
+import com.example.core.domain.UIComponent
+import com.example.core.util.Logger
+import com.example.hero_domain.Hero
 import com.example.hero_use_cases.GetHeros
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -34,7 +35,21 @@ class HeroListViewModel @Inject constructor(
             is HeroListEvents.GetHeros ->{
                 getHeros()
             }
+            is HeroListEvents.FilterHeros ->{
+                filterHeros()
+            }
+            is HeroListEvents.UpdateHeroName ->{
+                updateHeroName(events.heroName)
+            }
         }
+    }
+    private fun updateHeroName(newHeroName: String) {
+        state.value = state.value.copy(heroName = newHeroName)
+    }
+    private fun filterHeros(){
+
+        state.value = state.value.copy(filteredHeros = filteredList)
+
     }
 
     private fun getHeros() {
@@ -53,6 +68,7 @@ class HeroListViewModel @Inject constructor(
                 }
                 is DataState.Data -> {
                     state.value = state.value.copy(heros = dataState.data ?: listOf())
+                    filterHeros()
 
                 }
                 is DataState.Loading -> {

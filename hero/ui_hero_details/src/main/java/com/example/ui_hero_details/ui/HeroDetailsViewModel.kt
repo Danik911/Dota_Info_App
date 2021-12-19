@@ -5,15 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.core.DataState
-import com.example.core.Logger
-import com.example.core.ProgressBarState
+import com.example.core.domain.DataState
 import com.example.hero_use_cases.GetHeroFromCache
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class HeroDetailsViewModel
