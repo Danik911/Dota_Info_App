@@ -12,9 +12,9 @@ class FilterHeros {
         current: List<Hero>,
         heroName: String,
         heroFilter: HeroFilter,
-        attribute: HeroAttribute,
+        attributeFilter: HeroAttribute,
     ): List<Hero> {
-        val filteredList: MutableList<Hero> = current.filter {
+        var filteredList: MutableList<Hero> = current.filter {
             it.localizedName.lowercase().contains(heroName.lowercase())
         }.toMutableList()
 
@@ -34,24 +34,46 @@ class FilterHeros {
                     is FilterOrder.Descending -> {
                         filteredList.sortByDescending {
                             getWinRate(
-                                it.proPick.toDouble(),
-                                it.proWins.toDouble()
+                                it.proWins.toDouble(),
+                                it.proPick.toDouble()
                             )
                         }
                     }
                     is FilterOrder.Ascending -> {
                         filteredList.sortBy {
                             getWinRate(
-                                it.proPick.toDouble(),
-                                it.proWins.toDouble()
+                                it.proWins.toDouble(),
+                                it.proPick.toDouble()
                             )
                         }
                     }
                 }
             }
         }
+        when (attributeFilter) {
+            is HeroAttribute.Strength -> {
+                filteredList = filteredList.filter {
+                    it.primaryAttribute is HeroAttribute.Strength
+                }.toMutableList()
+
+            }
+            is HeroAttribute.Agility -> {
+                filteredList = filteredList.filter {
+                    it.primaryAttribute is HeroAttribute.Agility
+                }.toMutableList()
+            }
+            is HeroAttribute.Intelligence -> {
+                filteredList = filteredList.filter {
+                    it.primaryAttribute is HeroAttribute.Intelligence
+                }.toMutableList()
+            }
+            is HeroAttribute.Unknown -> {
+                //do not filter
+            }
 
 
+        }
+        return filteredList
     }
 
     private fun getWinRate(proWins: Double, proPick: Double): Int {

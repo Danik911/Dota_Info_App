@@ -9,6 +9,7 @@ import com.example.core.domain.DataState
 import com.example.core.domain.UIComponent
 import com.example.core.util.Logger
 import com.example.hero_domain.Hero
+import com.example.hero_use_cases.FilterHeros
 import com.example.hero_use_cases.GetHeros
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -20,6 +21,7 @@ import javax.inject.Named
 class HeroListViewModel @Inject constructor(
     private val getHeros: GetHeros,
     private val savedStateHandle: SavedStateHandle,
+    private val filterHeros: FilterHeros,
     @Named("heroListLogger") private val logger: Logger
 ) : ViewModel() {
 
@@ -30,26 +32,33 @@ class HeroListViewModel @Inject constructor(
         onTriggerEvent(HeroListEvents.GetHeros)
     }
 
-    fun onTriggerEvent(events: HeroListEvents){
-        when(events){
-            is HeroListEvents.GetHeros ->{
+    fun onTriggerEvent(events: HeroListEvents) {
+        when (events) {
+            is HeroListEvents.GetHeros -> {
                 getHeros()
             }
-            is HeroListEvents.FilterHeros ->{
+            is HeroListEvents.FilterHeros -> {
                 filterHeros()
             }
-            is HeroListEvents.UpdateHeroName ->{
+            is HeroListEvents.UpdateHeroName -> {
                 updateHeroName(events.heroName)
             }
         }
     }
+
     private fun updateHeroName(newHeroName: String) {
         state.value = state.value.copy(heroName = newHeroName)
+
     }
-    private fun filterHeros(){
 
+    private fun filterHeros() {
+        val filteredList = filterHeros.execute(
+            current = state.value.heros,
+            heroName = state.value.heroName,
+            heroFilter = state.value.heroFilter,
+            attributeFilter = state.value.primaryAttribute
+        )
         state.value = state.value.copy(filteredHeros = filteredList)
-
     }
 
     private fun getHeros() {

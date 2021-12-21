@@ -1,6 +1,6 @@
 package com.example.dota_infoapp.di
 
-import com.example.core.Logger
+import com.example.core.util.Logger
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +13,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideLogger(): Logger{
+    fun provideLogger(): Logger {
         return Logger(
             tag = "AppDebug",
             isDebug = true

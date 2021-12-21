@@ -1,6 +1,8 @@
 package com.example.ui_herolist.di
 
-import com.example.core.Logger
+
+import com.example.core.util.Logger
+import com.example.hero_use_cases.FilterHeros
 import com.example.hero_use_cases.GetHeros
 import com.example.hero_use_cases.HeroUseCases
 import dagger.Module
@@ -28,8 +30,16 @@ object HeroListModule {
     @Singleton
     fun provideGetHeros(
         useCases: HeroUseCases
-    ): GetHeros{
+    ): GetHeros {
         return useCases.getHeros
+    }
+
+    @Provides
+    @Singleton
+    fun provideFilterHeros(
+        useCases: HeroUseCases
+    ): FilterHeros {
+        return useCases.filterHeros
     }
 
 }
