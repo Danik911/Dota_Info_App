@@ -3,6 +3,7 @@ package com.example.dota_infoapp.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var imageLoader: ImageLoader
 
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,6 +55,7 @@ class MainActivity : ComponentActivity() {
     }
 
 
+    @ExperimentalAnimationApi
     private fun NavGraphBuilder.addHeroListComposable(
         imageLoader: ImageLoader,
         navController: NavController

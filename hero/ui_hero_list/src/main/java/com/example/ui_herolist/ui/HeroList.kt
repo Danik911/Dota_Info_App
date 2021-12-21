@@ -1,5 +1,6 @@
 package com.example.ui_herolist
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,11 +14,13 @@ import androidx.compose.ui.Modifier
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import com.example.core.domain.ProgressBarState
+import com.example.ui_herolist.components.HeroListFilter
 import com.example.ui_herolist.components.HeroListItem
 import com.example.ui_herolist.components.HeroListToolbar
 import com.example.ui_herolist.ui.HeroListEvents
 import com.example.ui_herolist.ui.HeroListState
 
+@ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 @ExperimentalCoilApi
 @Composable
@@ -53,6 +56,16 @@ fun HeroList(
                 }
             }
         }
+        HeroListFilter(
+            heroFilter = state.heroFilter,
+            onUpdateHeroFilter = {heroFilter ->
+                  events(HeroListEvents.UpdateHeroFilter(heroFilter = heroFilter))
+            },
+            onCloseDialog = {
+
+            }
+
+        )
 
         if (state.progressBarState is ProgressBarState.Loadind) {
             CircularProgressIndicator(

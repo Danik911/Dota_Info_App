@@ -9,6 +9,7 @@ import com.example.core.domain.DataState
 import com.example.core.domain.UIComponent
 import com.example.core.util.Logger
 import com.example.hero_domain.Hero
+import com.example.hero_domain.HeroFilter
 import com.example.hero_use_cases.FilterHeros
 import com.example.hero_use_cases.GetHeros
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,7 +44,14 @@ class HeroListViewModel @Inject constructor(
             is HeroListEvents.UpdateHeroName -> {
                 updateHeroName(events.heroName)
             }
+            is HeroListEvents.UpdateHeroFilter -> {
+                updateHeroFilter(events.heroFilter)
+            }
         }
+    }
+    private fun updateHeroFilter(heroFilter: HeroFilter){
+        state.value = state.value.copy(heroFilter = heroFilter)
+        filterHeros()
     }
 
     private fun updateHeroName(newHeroName: String) {
