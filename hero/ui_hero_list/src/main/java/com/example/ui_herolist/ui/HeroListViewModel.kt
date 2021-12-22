@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.domain.DataState
 import com.example.core.domain.UIComponent
+import com.example.core.domain.UIComponentState
 import com.example.core.util.Logger
 import com.example.hero_domain.Hero
 import com.example.hero_domain.HeroFilter
@@ -47,8 +48,14 @@ class HeroListViewModel @Inject constructor(
             is HeroListEvents.UpdateHeroFilter -> {
                 updateHeroFilter(events.heroFilter)
             }
+            is HeroListEvents.UpdateFilterDialogState -> {
+                state.value = state.value.copy(filterDialogState = events.uiComponentState)
+
+            }
         }
     }
+
+
     private fun updateHeroFilter(heroFilter: HeroFilter){
         state.value = state.value.copy(heroFilter = heroFilter)
         filterHeros()
