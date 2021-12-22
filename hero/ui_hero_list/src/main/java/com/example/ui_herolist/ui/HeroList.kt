@@ -21,23 +21,25 @@ import com.example.ui_herolist.components.HeroListToolbar
 import com.example.ui_herolist.ui.HeroListEvents
 import com.example.ui_herolist.ui.HeroListState
 
+@ExperimentalCoilApi
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
-@ExperimentalCoilApi
 @Composable
 fun HeroList(
     state: HeroListState,
     events: (HeroListEvents) -> Unit,
     imageLoader: ImageLoader,
-    navigateToDetailsScreen: (Int) -> Unit
-) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    navigateToDetailScreen: (Int) -> Unit,
+){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ){
         Column {
-
             HeroListToolbar(
                 heroName = state.heroName,
                 onHeroNameChanged = { heroName ->
-                    events(HeroListEvents.UpdateHeroName(heroName = heroName))
+                    events(HeroListEvents.UpdateHeroName(heroName))
                 },
                 onExecuteSearch = {
                     events(HeroListEvents.FilterHeros)
@@ -46,37 +48,37 @@ fun HeroList(
                     events(HeroListEvents.UpdateFilterDialogState(UIComponentState.Show))
                 }
             )
-            LazyColumn {
-                items(state.filteredHeros) { hero ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+            ){
+                items(state.filteredHeros){ hero ->
                     HeroListItem(
                         hero = hero,
-                        imageLoader = imageLoader,
                         onSelectHero = { heroId ->
-                            navigateToDetailsScreen(heroId)
-                        }
+                            navigateToDetailScreen(heroId)
+                        },
+                        imageLoader = imageLoader,
                     )
-
                 }
             }
         }
-
-        if (state.filterDialogState is UIComponentState.Show) {
+        if(state.filterDialogState is UIComponentState.Show){
             HeroListFilter(
                 heroFilter = state.heroFilter,
                 onUpdateHeroFilter = { heroFilter ->
-                    events(HeroListEvents.UpdateHeroFilter(heroFilter = heroFilter))
+                    events(HeroListEvents.UpdateHeroFilter(heroFilter))
+                },
+                attributeFilter = state.primaryAttribute,
+                onUpdateAttributeFilter = { attribute ->
+                    events(HeroListEvents.UpdateAttributeFilter(attribute))
                 },
                 onCloseDialog = {
-                    events(
-                        HeroListEvents
-                            .UpdateFilterDialogState(uiComponentState = UIComponentState.Hide)
-                    )
+                    events(HeroListEvents.UpdateFilterDialogState(UIComponentState.Hide))
                 }
             )
         }
-
-
-        if (state.progressBarState is ProgressBarState.Loadind) {
+        if(state.progressBarState is ProgressBarState.Loadind){
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center)
             )

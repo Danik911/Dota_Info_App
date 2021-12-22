@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
                 state = viewModel.state.value,
                 imageLoader = imageLoader,
                 events = viewModel::onTriggerEvent,
-                navigateToDetailsScreen = { heroId ->
+                navigateToDetailScreen = { heroId ->
                     navController.navigate("${Screen.HeroDetails.route}/$heroId")
                 },
 
