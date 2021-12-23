@@ -13,6 +13,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
+import com.example.components.DefaultScreenUI
 import com.example.core.domain.ProgressBarState
 import com.example.core.domain.UIComponentState
 import com.example.ui_herolist.components.HeroListFilter
@@ -31,10 +32,7 @@ fun HeroList(
     imageLoader: ImageLoader,
     navigateToDetailScreen: (Int) -> Unit,
 ){
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ){
+    DefaultScreenUI(progressBarState = state.progressBarState) {
         Column {
             HeroListToolbar(
                 heroName = state.heroName,
@@ -78,10 +76,6 @@ fun HeroList(
                 }
             )
         }
-        if(state.progressBarState is ProgressBarState.Loadind){
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
     }
+
 }

@@ -2,12 +2,13 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
-      <module name="Dota_Info_App.app" target="11" />
-      <module name="Dota_Info_App.components" target="11" />
+      <module name="Dota_Info_App.app" target="16" />
+      <module name="Dota_Info_App.buildSrc" target="16" />
+      <module name="Dota_Info_App.components" target="16" />
       <module name="Dota_Info_App.hero.ui-hero-detail" target="11" />
       <module name="Dota_Info_App.hero.ui-hero-list" target="11" />
-      <module name="Dota_Info_App.hero.ui_hero_details" target="11" />
-      <module name="Dota_Info_App.hero.ui_hero_list" target="11" />
+      <module name="Dota_Info_App.hero.ui_hero_details" target="16" />
+      <module name="Dota_Info_App.hero.ui_hero_list" target="16" />
       <module name="Dota_InfoApp.buildSrc" target="11" />
     </bytecodeTargetLevel>
   </component>

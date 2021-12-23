@@ -7,6 +7,7 @@ dependencies{
     "implementation"(project(Modules.core))
     "implementation"(project(Modules.heroDomain))
     "implementation"(project(Modules.heroUseCases))
+    "implementation"(project(Modules.components))
 
     "implementation"(SqlDelight.androidDriver)
 
