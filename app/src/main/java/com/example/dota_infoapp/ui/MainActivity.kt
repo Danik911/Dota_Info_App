@@ -3,14 +3,14 @@ package com.example.dota_infoapp.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import com.example.HeroDetails
@@ -18,8 +18,10 @@ import com.example.dota_infoapp.ui.navigation.Screen
 import com.example.dota_infoapp.ui.theme.DotaInfoTheme
 import com.example.ui_hero_details.ui.HeroDetailsViewModel
 import com.example.ui_herolist.HeroList
-import com.example.ui_herolist.ui.HeroListEvents
 import com.example.ui_herolist.ui.HeroListViewModel
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -37,18 +39,24 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             DotaInfoTheme {
-                val navController = rememberNavController()
-                NavHost(
-                    navController = navController,
-                    startDestination = Screen.HeroList.route
-                ) {
-                    addHeroListComposable(
-                        imageLoader = imageLoader,
-                        navController = navController
-                    )
-                    addHeroDetailsComposable(imageLoader = imageLoader)
+                val navController = rememberAnimatedNavController()
+                BoxWithConstraints {
+                    AnimatedNavHost(
+                        navController = navController,
+                        startDestination = Screen.HeroList.route
+                    ) {
+                        addHeroListComposable(
+                            imageLoader = imageLoader,
+                            navController = navController,
+                            width = constraints.maxWidth / 2
+                        )
+                        addHeroDetailsComposable(
+                            imageLoader = imageLoader,
+                            width = constraints.maxWidth / 2
+                        )
 
 
+                    }
                 }
             }
         }
@@ -58,9 +66,30 @@ class MainActivity : ComponentActivity() {
     @ExperimentalAnimationApi
     private fun NavGraphBuilder.addHeroListComposable(
         imageLoader: ImageLoader,
-        navController: NavController
+        navController: NavController,
+        width: Int,
     ) {
-        composable(Screen.HeroList.route) {
+        composable(
+            route = Screen.HeroList.route,
+            exitTransition = { _, _ ->
+                slideOutHorizontally(
+                    targetOffsetX = { -width },
+                    animationSpec = tween(
+                        durationMillis = 300,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeOut(animationSpec = tween(300))
+            },
+            popEnterTransition = { _, _ ->
+                slideInHorizontally(
+                    initialOffsetX = { -width },
+                    animationSpec = tween(
+                        300,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeIn(animationSpec = tween(300))
+            }
+        ) {
             val viewModel: HeroListViewModel = hiltViewModel()
             HeroList(
                 state = viewModel.state.value,
@@ -70,14 +99,36 @@ class MainActivity : ComponentActivity() {
                     navController.navigate("${Screen.HeroDetails.route}/$heroId")
                 },
 
-            )
+                )
         }
     }
 
-    private fun NavGraphBuilder.addHeroDetailsComposable(imageLoader: ImageLoader) {
+    @ExperimentalAnimationApi
+    private fun NavGraphBuilder.addHeroDetailsComposable(
+        imageLoader: ImageLoader,
+        width: Int
+    ) {
         composable(
             route = Screen.HeroDetails.route + "/{heroId}",
-            arguments = Screen.HeroDetails.arguments
+            arguments = Screen.HeroDetails.arguments,
+            enterTransition = { _, _ ->
+                slideInHorizontally(
+                    initialOffsetX = { width },
+                    animationSpec = tween(
+                        300,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            popExitTransition = { _, _ ->
+                slideOutHorizontally(
+                    targetOffsetX = { width },
+                    animationSpec = tween(
+                        durationMillis = 300,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeOut(animationSpec = tween(300))
+            }
         ) {
             val viewModel: HeroDetailsViewModel = hiltViewModel()
             HeroDetails(
