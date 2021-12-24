@@ -1,5 +1,6 @@
 package com.example
 
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -24,10 +25,9 @@ import com.example.components.DefaultScreenUI
 import com.example.hero_domain.Hero
 import com.example.hero_domain.maxAttackDmg
 import com.example.hero_domain.minAttackDmg
-import com.example.ui_hero_details.ui.HeroDetailsState
 import com.example.ui_hero_details.R
-
-
+import com.example.ui_hero_details.ui.HeroDetailsEvens
+import com.example.ui_hero_details.ui.HeroDetailsState
 import kotlin.math.round
 
 @ExperimentalCoilApi
@@ -35,8 +35,14 @@ import kotlin.math.round
 fun HeroDetails(
     state: HeroDetailsState,
     imageLoader: ImageLoader,
+    evens: (HeroDetailsEvens) -> Unit
 ) {
-    DefaultScreenUI(progressBarState = state.progressBarState) {
+    DefaultScreenUI(progressBarState = state.progressBarState,
+        queue = state.errorQueue,
+        onRemoveHeadFromQueue = {
+            evens(HeroDetailsEvens.OnRemoveHeadFromQueue)
+        }
+    ) {
         state.hero?.let { hero ->
             LazyColumn(
                 modifier = Modifier

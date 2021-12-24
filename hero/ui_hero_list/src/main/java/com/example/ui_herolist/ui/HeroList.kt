@@ -1,20 +1,16 @@
 package com.example.ui_herolist
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import com.example.components.DefaultScreenUI
-import com.example.core.domain.ProgressBarState
 import com.example.core.domain.UIComponentState
 import com.example.ui_herolist.components.HeroListFilter
 import com.example.ui_herolist.components.HeroListItem
@@ -31,8 +27,14 @@ fun HeroList(
     events: (HeroListEvents) -> Unit,
     imageLoader: ImageLoader,
     navigateToDetailScreen: (Int) -> Unit,
-){
-    DefaultScreenUI(progressBarState = state.progressBarState) {
+) {
+    DefaultScreenUI(
+        progressBarState = state.progressBarState,
+        onRemoveHeadFromQueue = {
+            events(HeroListEvents.OnRemoveHeadFromQueue)
+        },
+        queue = state.errorQueue
+    ) {
         Column {
             HeroListToolbar(
                 heroName = state.heroName,
@@ -49,8 +51,8 @@ fun HeroList(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-            ){
-                items(state.filteredHeros){ hero ->
+            ) {
+                items(state.filteredHeros) { hero ->
                     HeroListItem(
                         hero = hero,
                         onSelectHero = { heroId ->
@@ -61,7 +63,7 @@ fun HeroList(
                 }
             }
         }
-        if(state.filterDialogState is UIComponentState.Show){
+        if (state.filterDialogState is UIComponentState.Show) {
             HeroListFilter(
                 heroFilter = state.heroFilter,
                 onUpdateHeroFilter = { heroFilter ->

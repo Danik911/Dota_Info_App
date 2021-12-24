@@ -133,7 +133,9 @@ class MainActivity : ComponentActivity() {
             val viewModel: HeroDetailsViewModel = hiltViewModel()
             HeroDetails(
                 state = viewModel.state.value,
-                imageLoader = imageLoader
+                imageLoader = imageLoader,
+                evens = viewModel::onTriggerEvent,
+
             )
         }
     }

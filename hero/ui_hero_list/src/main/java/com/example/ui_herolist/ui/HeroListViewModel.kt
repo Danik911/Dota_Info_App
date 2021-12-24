@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.domain.DataState
+import com.example.core.domain.Queue
 import com.example.core.domain.UIComponent
 import com.example.core.util.Logger
 import com.example.hero_domain.HeroAttribute
@@ -31,6 +32,7 @@ class HeroListViewModel @Inject constructor(
 
     init {
         onTriggerEvent(HeroListEvents.GetHeros)
+
     }
 
     fun onTriggerEvent(events: HeroListEvents) {
@@ -55,6 +57,21 @@ class HeroListViewModel @Inject constructor(
                 updateAttributeFilter(events.heroAttribute)
 
             }
+            is HeroListEvents.OnRemoveHeadFromQueue -> {
+                removeHeadMessage()
+
+            }
+        }
+    }
+
+    private fun removeHeadMessage() {
+        try {
+            val queue = state.value.errorQueue
+            queue.remove()
+            state.value = state.value.copy(errorQueue = Queue(mutableListOf()))//force recompose
+            state.value = state.value.copy(errorQueue = queue)
+        } catch (e: Exception){
+            logger.log("Nothing to remove from Dialog Queue")
         }
     }
 
@@ -90,7 +107,7 @@ class HeroListViewModel @Inject constructor(
                 is DataState.Response -> {
                     when (dataState.uiComponent) {
                         is UIComponent.Dialog -> {
-                            logger.log((dataState.uiComponent as UIComponent.Dialog).description)
+                            appendToMessageQueue(uiComponent = dataState.uiComponent)
                         }
                         is UIComponent.None -> {
                             logger.log((dataState.uiComponent as UIComponent.None).message)
@@ -110,6 +127,12 @@ class HeroListViewModel @Inject constructor(
 
             }
         }.launchIn(viewModelScope)
+    }
+    private fun appendToMessageQueue(uiComponent: UIComponent){
+        val queue = state.value.errorQueue
+        queue.add((uiComponent))
+        state.value = state.value.copy(errorQueue = Queue(mutableListOf()))//force recompose
+        state.value = state.value.copy(errorQueue = queue)
     }
 
 }
