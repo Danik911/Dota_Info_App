@@ -13,63 +13,66 @@ import io.ktor.http.*
 
 class HeroServiceFake {
 
-    private val Url.hostWithPortIfRequired: String get() = if (port == protocol.defaultPort) host else hostWithPort
-    private val Url.fullUrl: String get() = "${protocol.name}://$hostWithPortIfRequired$fullPath"
+    companion object Factory {
 
-    fun build(
-        type: HeroServiceResponseType
-    ): HeroService {
-        val client = HttpClient(MockEngine) {
-            install(JsonFeature) {
-                serializer = KotlinxSerializer(
-                    kotlinx.serialization.json.Json {
-                        ignoreUnknownKeys = true
-                    }
-                )
-            }
-            engine {
-                addHandler { request ->
-                    when (request.url.fullUrl) {
-                        "https://api.opendota.com/api/heroStats" -> {
-                            val responseHeaders = headersOf(
-                                "Content-Type" to listOf("application/json", "charset=utf-8")
-                            )
-                            when(type){
-                                is HeroServiceResponseType.EmptyList -> {
-                                    respond(
-                                        HeroDataEmpty.data,
-                                        status = HttpStatusCode.OK,
-                                        headers = responseHeaders
-                                    )
-                                }
-                                is HeroServiceResponseType.MalformedData -> {
-                                    respond(
-                                        HeroDataMalformed.data,
-                                        status = HttpStatusCode.OK,
-                                        headers = responseHeaders
-                                    )
-                                }
-                                is HeroServiceResponseType.ValidData -> {
-                                    respond(
-                                        HeroDataValid.data,
-                                        status = HttpStatusCode.OK,
-                                        headers = responseHeaders
-                                    )
-                                }
-                                is HeroServiceResponseType.Http404 -> {
-                                    respond(
-                                        HeroDataEmpty.data,
-                                        status = HttpStatusCode.NotFound,
-                                        headers = responseHeaders
-                                    )
+        private val Url.hostWithPortIfRequired: String get() = if (port == protocol.defaultPort) host else hostWithPort
+        private val Url.fullUrl: String get() = "${protocol.name}://$hostWithPortIfRequired$fullPath"
+
+        fun build(
+            type: HeroServiceResponseType
+        ): HeroService {
+            val client = HttpClient(MockEngine) {
+                install(JsonFeature) {
+                    serializer = KotlinxSerializer(
+                        kotlinx.serialization.json.Json {
+                            ignoreUnknownKeys = true // if the server sends extra fields, ignore them
+                        }
+                    )
+                }
+                engine {
+                    addHandler { request ->
+                        when (request.url.fullUrl) {
+                            "https://api.opendota.com/api/heroStats" -> {
+                                val responseHeaders = headersOf(
+                                    "Content-Type" to listOf("application/json", "charset=utf-8")
+                                )
+                                when(type){
+                                    is HeroServiceResponseType.EmptyList -> {
+                                        respond(
+                                            HeroDataEmpty.data,
+                                            status = HttpStatusCode.OK,
+                                            headers = responseHeaders
+                                        )
+                                    }
+                                    is HeroServiceResponseType.MalformedData -> {
+                                        respond(
+                                            HeroDataMalformed.data,
+                                            status = HttpStatusCode.OK,
+                                            headers = responseHeaders
+                                        )
+                                    }
+                                    is HeroServiceResponseType.ValidData -> {
+                                        respond(
+                                            HeroDataValid.data,
+                                            status = HttpStatusCode.OK,
+                                            headers = responseHeaders
+                                        )
+                                    }
+                                    is HeroServiceResponseType.Http404 -> {
+                                        respond(
+                                            HeroDataEmpty.data,
+                                            status = HttpStatusCode.NotFound,
+                                            headers = responseHeaders
+                                        )
+                                    }
                                 }
                             }
+                            else -> error("Unhandled ${request.url.fullUrl}")
                         }
-                        else -> error("Unhandled ${request.url.fullUrl}")
                     }
                 }
             }
+            return HeroServiceImpl(client)
         }
-        return HeroServiceImpl(client)
     }
 }
