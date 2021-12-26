@@ -20,7 +20,7 @@ class GetHeroFromCache(private val cache: HeroCache) {
             val cachedHero = cache.getHero(id = id)
 
             if (cachedHero == null) {
-                throw Exception("That hero deos not exist in the cache")
+                throw Exception("That hero does not exist in the cache")
             }
             emit(DataState.Data(cachedHero))
 
