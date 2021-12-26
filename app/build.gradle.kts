@@ -52,6 +52,8 @@ dependencies{
     implementation (project(Modules.heroUseCases))
     implementation (project(Modules.ui_heroList))
     implementation (project(Modules.ui_heroDetail))
+    implementation (project(Modules.heroDataSource))
+
 
 
 
@@ -76,6 +78,13 @@ dependencies{
     kapt(Hilt.compiler)
 
     implementation(SqlDelight.androidDriver)
+
+    androidTestImplementation(project(Modules.heroDataSourceTest))
+    androidTestImplementation(AndroidXTest.runner)
+    androidTestImplementation(ComposeTest.uiTestJunit4)
+    androidTestImplementation(HiltTest.hiltAndroidTesting)
+    kaptAndroidTest(Hilt.compiler)
+    androidTestImplementation(Junit.junit4)
 
 }
 

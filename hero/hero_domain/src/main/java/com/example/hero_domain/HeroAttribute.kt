@@ -6,7 +6,7 @@ sealed class HeroAttribute(
 ) {
     object Agility : HeroAttribute(
         uiValue = "Agility",
-        abbreviation = "agl",
+        abbreviation = "agi",
     )
 
     object Strength : HeroAttribute(
