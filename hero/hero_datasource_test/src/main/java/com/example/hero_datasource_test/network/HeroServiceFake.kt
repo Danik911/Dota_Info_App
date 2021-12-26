@@ -10,6 +10,7 @@ import io.ktor.client.engine.mock.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.http.*
+import org.jetbrains.annotations.TestOnly
 
 class HeroServiceFake {
 
@@ -75,4 +76,5 @@ class HeroServiceFake {
             return HeroServiceImpl(client)
         }
     }
+
 }

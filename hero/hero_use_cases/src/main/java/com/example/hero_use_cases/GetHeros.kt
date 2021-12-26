@@ -55,4 +55,4 @@ class GetHeros(
             emit(DataState.Loading<List<Hero>>(progressBarState = ProgressBarState.Idle))
         }
     }
-}
+    }
