@@ -35,12 +35,12 @@ import kotlin.math.round
 fun HeroDetails(
     state: HeroDetailsState,
     imageLoader: ImageLoader,
-    evens: (HeroDetailsEvens) -> Unit
+    events: (HeroDetailsEvens) -> Unit
 ) {
     DefaultScreenUI(progressBarState = state.progressBarState,
         queue = state.errorQueue,
         onRemoveHeadFromQueue = {
-            evens(HeroDetailsEvens.OnRemoveHeadFromQueue)
+            events(HeroDetailsEvens.OnRemoveHeadFromQueue)
         }
     ) {
         state.hero?.let { hero ->

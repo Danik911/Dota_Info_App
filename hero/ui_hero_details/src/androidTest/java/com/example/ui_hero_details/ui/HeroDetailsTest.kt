@@ -43,7 +43,7 @@ class HeroDetailsTest {
             HeroDetails(
                 state = state,
                 imageLoader = imageLoader,
-                evens = {}
+                events = {}
             )
         }
         composeTestRule.onNodeWithText(hero.localizedName).assertIsDisplayed()

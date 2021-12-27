@@ -134,7 +134,7 @@ class MainActivity : ComponentActivity() {
             HeroDetails(
                 state = viewModel.state.value,
                 imageLoader = imageLoader,
-                evens = viewModel::onTriggerEvent,
+                events = viewModel::onTriggerEvent,
 
             )
         }
